@@ -1,1 +1,1 @@
-this is simple shell projcet
+this is simple shell project
