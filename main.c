@@ -1,21 +1,44 @@
-#include"shell.h"
-int main(int argc, char **argv)
+#include "shell.h"
+
+/**
+ * main - Entry point of the program.
+ * @ac: Argument count.
+ * @av: Argument vector.
+ *
+ * Return: 0 on success, 1 on error.
+ */
+int main(int ac, char **av)
 {
-	char *cmd = NULL, char *token = NULL, char *arg;
-	size_t n = 0;
-	char *delim = " \n";
+	info_t info[] = {INFO_INIT}; 
+	int fd = 2; 
 
-	while (true){
-		cmd = _getline(); /*reading the input */
-		token = _strtok(cmd); // split the command line
-		arg = _strtok_cp(cmd, argc); /*copy to the arg array*/
-		if (_check_for_cmd(token[0]) == NULL)
-			perror("%s: No such file or directory", argv[0]);
-        else
-		/* execute the program with fork and excev and write the function codes */
-		printf("executed");
-                
+	asm("mov %1, %0\n\t"
+        "add $3, %0"
+        : "=r"(fd)
+        : "r"(fd));
+	
+	if (ac == 2)
+	{
+		fd = open(av[1], O_RDONLY);
+	       	if (fd == -1)
+		{
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
+			return (EXIT_FAILURE);
+		}
+		info->readfd = fd;
 	}
-	return (0);
-
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
