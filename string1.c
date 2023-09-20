@@ -1,5 +1,23 @@
 #include "shell.h"
-
+/**
+ *_strncpm - function to compare two strings
+ *@str1: the first string
+ *@str2: the second string
+ *@n: size of the buffer
+ *Return: -1 or 1 or 0
+ */
+char *_strncmp(const char *str1, const char *str2, size_t n)
+{
+	while (*str1 && *str2 && n > 0 && *str1 == *str2)
+	{
+		str1++;
+		str2++;
+		n--;
+	}
+	if (n == 0)
+		return (char *) str1;
+	return NULL;
+}
 /**
  * _strcpy - copies a string
  * @dest: the destination

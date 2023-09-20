@@ -12,7 +12,7 @@ int _myenv(info_t *info)
 
 	while (node)
 	{
-		_printf("%s\n", node->str);
+		printf("%s\n", node->str);
 		node = node->next;
 	}
 

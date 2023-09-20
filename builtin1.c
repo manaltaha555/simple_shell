@@ -14,7 +14,7 @@ int _myhistory(info_t *info)
 
 	while (node)
 	{
-		_printf("%d %s\n", line_number, node->str);
+		printf("%d %s\n", line_number, node->str);
 		line_number++;
 		node = node->next;
 	}
@@ -65,7 +65,7 @@ int print_alias(list_t *node)
 	if (node)
 	{
 		p = _strchr(node->str, '=');
-		_printf("%.*s'%s'\n", (int)(p - node->str), node->str, p + 1);
+		printf("%.*s'%s'\n", (int)(p - node->str), node->str, p + 1);
 		return (0);
 	}
 	return (1);
