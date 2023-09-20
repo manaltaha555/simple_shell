@@ -40,7 +40,7 @@ int _erratoi(const char *s)
  *
  * Return: void
  */
-void print_error(const info_t *info, const char *estr)
+void print_error(const info_t *info, char *estr)
 {
 	if (info != NULL && info->fname != NULL && info->argv != NULL)
 	{

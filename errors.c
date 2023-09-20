@@ -1,16 +1,21 @@
 #include "shell.h"
 
 /**
- * _eputs - prints an input string
+ *_eputs - prints an input string
  * @str: the string to be printed
  *
  * Return: Nothing
  */
-void _eputs(const char *str)
+void _eputs(char *str)
 {
-	if (str != NULL)
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i] != '\0')
 	{
-		fprintf(stderr, "%s", str);
+		_eputchar(str[i]);
+		i++;
 	}
 }
 
@@ -23,7 +28,17 @@ void _eputs(const char *str)
  */
 int _eputchar(char c)
 {
-	return (fputc(c, stderr));
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(2, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
 
 /**
@@ -36,23 +51,35 @@ int _eputchar(char c)
  */
 int _putfd(char c, int fd)
 {
-	return (write(fd, &c, 1));
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(fd, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
 
 /**
- * _putsfd - prints an input string
+ *_putsfd - prints an input string
  * @str: the string to be printed
  * @fd: the filedescriptor to write to
  *
  * Return: the number of chars put
  */
-int _putsfd(const char *str, int fd)
+int _putsfd(char *str, int fd)
 {
-	int count = 0;
+	int i = 0;
 
-	if (str != NULL)
+	if (!str)
+		return (0);
+	while (*str)
 	{
-		count = (int)write(fd, str, strlen(str));
+		i += _putfd(*str++, fd);
 	}
-	return (count);
+	return (i);
 }
